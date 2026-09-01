@@ -565,9 +565,29 @@ class ControlWindow(QMainWindow):
     def duration_changed_b(self, duration):
         self.slider_seek_b.setRange(0, duration)
 
-    # --- CLEAN SHUTDOWN FIX ---
+    # --- CLEAN SHUTDOWN FIX FOR LINUX & MAC ---
     def closeEvent(self, event):
-        self.display_window.close()
+        # 1. Stop playback on both decks
+        if hasattr(self, 'video_player'):
+            self.video_player.stop()
+            # Disconnect the video frame sink callback to prevent signals on a dying thread
+            try:
+                self.display_window.video_widget.videoSink().videoFrameChanged.disconnect(self.process_video_frame)
+            except (TypeError, RuntimeError):
+                pass
+            # Detach outputs from media players
+            self.video_player.setVideoOutput(None)
+            self.video_player.setAudioOutput(None)
+
+        if hasattr(self, 'audio_player'):
+            self.audio_player.stop()
+            self.audio_player.setAudioOutput(None)
+
+        # 2. Safely close secondary display window
+        if hasattr(self, 'display_window') and self.display_window:
+            self.display_window.close()
+
+        # 3. Accept the event to close normally
         event.accept()
 
 def main():
