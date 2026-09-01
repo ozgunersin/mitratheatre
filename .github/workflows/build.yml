@@ -20,7 +20,7 @@ jobs:
       - name: Install dependencies
         run: pip install -r requirements.txt
       - name: Build Windows Executable
-        run: pyinstaller mitra_theatre.spec
+        run: pyinstaller mitra_theatre_windows.spec
       
       # Run the pre-installed Inno Setup Compiler (Change 'setup.iss' to your actual script name)
       - name: Build Windows Installer
