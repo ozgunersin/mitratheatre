@@ -98,3 +98,21 @@ jobs:
         with:
           name: MitraTheatre-Linux
           path: "*.AppImage"
+  create-release:
+    needs: [build-windows, build-macos, build-linux] # Waits for builds to finish
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download all artifacts
+        uses: actions/download-artifact@v4
+      
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: "v1.0.${{ github.run_number }}"
+          name: "Mitra Theatre Build ${{ github.run_number }}"
+          files: |
+            MitraTheatre-Windows-Installer/*.exe
+            MitraTheatre-macOS/*.dmg
+            MitraTheatre-Linux/*.AppImage
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
