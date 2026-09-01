@@ -1,6 +1,6 @@
 # Building Mitra Theatre — Windows & macOS
 
-This folder has everything needed to turn `presentation_player.py` into:
+This folder has everything needed to turn `mitra_theatre.py` into:
 - **Windows**: `MitraTheatre_Setup.exe` — a normal Windows installer
 - **macOS**: `MitraTheatre_Installer.dmg` — a drag-to-Applications installer
 
@@ -12,7 +12,7 @@ Mac side, or a Windows VM (Parallels/VMware) if you're starting from a Mac.
 
 Files in this folder:
 ```
-presentation_player.py       your app
+mitra_theatre.py             your app
 icon.ico                     app icon (Windows / in-app)
 icon.icns                    app icon (macOS bundle)
 requirements.txt             Python dependencies
@@ -91,7 +91,7 @@ first-run experience at scale.
 
 ## Rebuilding after code changes
 
-Any time you edit `presentation_player.py`, just re-run the relevant
+Any time you edit `mitra_theatre.py`, just re-run the relevant
 `pyinstaller` command (step 3 above) on that platform, then re-run the
 installer step (Inno Setup compile / `create_dmg.sh`).
 
@@ -101,7 +101,7 @@ The control window has a **Donate** button next to **Info**, and the Info
 popup also includes a donation link — both point to
 `https://kreosus.com/mitratheatre/about` and open in the user's default
 browser. To change the URL, update `DONATION_URL` near the top of
-`presentation_player.py`.
+`mitra_theatre.py`.
 
 ## Swapping the icon
 
