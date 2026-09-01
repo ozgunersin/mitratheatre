@@ -8,7 +8,7 @@ HAS_ICON = os.path.exists("icon.ico")
 block_cipher = None
 
 a = Analysis(
-    ['presentation_player.py'],
+    ['mitra_theatre.py'],
     pathex=[],
     binaries=[],
     datas=[('icon.ico', '.')] if HAS_ICON else [],
