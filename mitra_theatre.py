@@ -370,7 +370,7 @@ class ControlWindow(QMainWindow):
         dialog_layout.addLayout(header_layout)
 
         details_label = QLabel(
-            "<p><b>Version:</b> 1.2</p>"
+            "<p><b>Version:</b> 1.2.10</p>"
             "<p>&copy; 2026 Özgün Ersin. All Rights Reserved.</p>"
             "<p>A professional dual-deck media controller designed for seamless presentations and live events.</p>"
             "<h3>Changelog</h3>"
