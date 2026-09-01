@@ -1,37 +1,44 @@
+# -*- mode: python ; coding: utf-8 -*-
+
+
 a = Analysis(
-    ['mitra_theatre.py'],  # Your main script
+    ['mitra_theatre.py'],
     pathex=[],
     binaries=[],
-    datas=[],
+    datas=[('icon.ico', '.'), ('EULA.txt', '.')],
     hiddenimports=[],
     hookspath=[],
     hooksconfig={},
     runtime_hooks=[],
-    excludedimports=[],
+    excludes=[],
     noarchive=False,
+    optimize=0,
 )
-pyz = PYZ(a.pure, a.zipped_data, cipher=block_cipher)
+pyz = PYZ(a.pure)
 
 exe = EXE(
     pyz,
     a.scripts,
     [],
     exclude_binaries=True,
-    name='MitraTheatre',  # Executable name
+    name='mitra_theatre',
     debug=False,
     bootloader_ignore_signals=False,
     strip=False,
     upx=True,
     console=False,
+    disable_windowed_traceback=False,
+    argv_emulation=False,
+    target_arch=None,
+    codesign_identity=None,
+    entitlements_file=None,
 )
-
 coll = COLLECT(
     exe,
     a.binaries,
-    a.zipfiles,
     a.datas,
     strip=False,
     upx=True,
     upx_exclude=[],
-    name='MitraTheatre',  # This should match the directory name
+    name='mitra_theatre',
 )
