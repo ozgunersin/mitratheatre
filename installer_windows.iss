@@ -39,8 +39,7 @@ Name: "english"; MessagesFile: "compiler:Default.isl"
 Name: "desktopicon"; Description: "Create a &desktop shortcut"; GroupDescription: "Additional shortcuts:"
 
 [Files]
-Source: "dist\Mitra Theatre\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
-
+Source: "dist\mitra_theatre\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
 [Icons]
 Name: "{group}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"
 Name: "{commondesktop}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; Tasks: desktopicon
