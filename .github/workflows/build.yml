@@ -85,7 +85,7 @@ jobs:
           #!/bin/sh
           HERE="$(dirname "$(readlink -f "${0}")")"
           export LD_LIBRARY_PATH="${HERE}/usr/bin:${LD_LIBRARY_PATH}"
-          exec "${HERE}/usr/bin/mitra_theatre" "$@"
+          exec "${HERE}/usr/bin/MitraTheatre" "$@"
           EOF
           chmod +x AppDir/AppRun
           
@@ -93,7 +93,7 @@ jobs:
           [Desktop Entry]
           Type=Application
           Name=Mitra Theatre
-          Exec=mitra_theatre
+          Exec=MitraTheatre
           Icon=icon
           Categories=Utility;
           Terminal=false
