@@ -1,0 +1,64 @@
+END-USER LICENSE AGREEMENT (EULA) FOR MITRA THEATRE
+
+IMPORTANT - READ CAREFULLY: This End-User License Agreement ("EULA") is a legal agreement between you (the "User") and Özgün Ersin ("the Author") for the Mitra Theatre software product.
+
+1. GRANT OF LICENSE
+The Author grants you a revocable, non-exclusive, limited license to download, install, use, and freely share the Software Product strictly in accordance with the terms of this Agreement. The use and distribution of this Software Product "as it is" is completely free of charge.
+
+2. COPYRIGHT AND INTELLECTUAL PROPERTY
+The Software Product and all intellectual property rights therein are owned by the Author. The Software Product is protected by copyright laws and international copyright treaties.
+
+3. RESTRICTIONS
+You may not:
+a) Sell, rent, lease, or charge any fee for the Software Product. It must remain strictly free of charge.
+b) Modify, alter, or create derivative works of the proprietary portions of the Software Product. Any authorized sharing or distribution must be of the original, unmodified software exactly "as it is".
+c) Decompile, reverse engineer, or disassemble the proprietary portions of the Software Product, except to the extent permitted by applicable law or the LGPL v3 license governing the PySide6 library.
+d) Remove any proprietary notices or labels on the Software Product.
+
+4. THIRD-PARTY SOFTWARE (LGPL COMPLIANCE)
+This Software Product utilizes the PySide6 toolkit, which is copyrighted by The Qt Company and/or its subsidiaries, and is licensed under the GNU Lesser General Public License (LGPL) v3. 
+A copy of the LGPL v3 license can be found at: https://www.gnu.org/licenses/lgpl-3.0.html
+You may modify the PySide6 library and reverse engineer the Software Product solely for the purpose of debugging such modifications, as permitted by the LGPL v3.
+
+5. DISCLAIMER OF WARRANTIES
+THE SOFTWARE PRODUCT IS PROVIDED "AS IS" WITHOUT WARRANTY OF ANY KIND. TO THE MAXIMUM EXTENT PERMITTED BY APPLICABLE LAW, THE AUTHOR DISCLAIMS ALL WARRANTIES, EXPRESSED OR IMPLIED, INCLUDING, BUT NOT LIMITED TO, IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+
+6. LIMITATION OF LIABILITY
+IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, INCIDENTAL, INDIRECT, OR CONSEQUENTIAL DAMAGES WHATSOEVER (INCLUDING, WITHOUT LIMITATION, DAMAGES FOR LOSS OF BUSINESS PROFITS, EVENT INTERRUPTION, LOSS OF BUSINESS INFORMATION, OR ANY OTHER PECUNIARY LOSS) ARISING OUT OF THE USE OF OR INABILITY TO USE THE SOFTWARE PRODUCT, EVEN IF THE AUTHOR HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
+
+7. GOVERNING LAW
+This EULA shall be governed by and construed in accordance with the laws of Türkiye, with jurisdiction in Antalya.
+
+====================================================================
+====================================================================
+
+MITRA THEATRE İÇİN SON KULLANICI LİSANS SÖZLEŞMESİ (EULA)
+
+ÖNEMLİ - DİKKATLİCE OKUYUN: Bu Son Kullanıcı Lisans Sözleşmesi ("EULA"), Mitra Theatre yazılım ürünü için sizinle ("Kullanıcı") ve Özgün Ersin ("Yazar") arasında yapılan yasal bir sözleşmedir.
+
+1. LİSANS VERİLMESİ
+Yazar size, Yazılım Ürününü kesinlikle bu Sözleşmenin şartlarına uygun olarak indirmek, kurmak, kullanmak ve özgürce paylaşmak için geri alınabilir, münhasır olmayan, sınırlı bir lisans verir. Bu Yazılım Ürününün "olduğu gibi" kullanımı ve dağıtımı tamamen ücretsizdir.
+
+2. TELİF HAKKI VE FİKRİ MÜLKİYET
+Yazılım Ürünü ve içindeki tüm fikri mülkiyet hakları Yazar'a aittir. Yazılım Ürünü, telif hakkı yasaları ve uluslararası telif hakkı antlaşmaları ile korunmaktadır.
+
+3. KISITLAMALAR
+Şunları yapamazsınız:
+a) Yazılım Ürününü satmak, kiralamak, finansal kiralamaya konu etmek veya herhangi bir ücret talep etmek. Yazılım kesinlikle ücretsiz kalmalıdır.
+b) Yazılım Ürününün tescilli kısımlarını değiştirmek, uyarlamak veya türev çalışmalarını oluşturmak. İzin verilen her türlü paylaşım veya dağıtım, orijinal ve değiştirilmemiş yazılımın tam olarak "olduğu gibi" halini içermelidir.
+c) Yürürlükteki kanunların veya PySide6 kütüphanesini yöneten LGPL v3 lisansının izin verdiği ölçü dışında, Yazılım Ürününün tescilli kısımlarını kaynak koda dönüştürmek, tersine mühendislik yapmak veya parçalara ayırmak.
+d) Yazılım Ürünü üzerindeki herhangi bir tescilli bildirimi veya etiketi kaldırmak.
+
+4. ÜÇÜNCÜ TARAF YAZILIMLARI (LGPL UYUMLULUĞU)
+Bu Yazılım Ürünü, telif hakkı The Qt Company ve/veya bağlı kuruluşlarına ait olan ve GNU Kısıtlı Genel Kamu Lisansı (LGPL) v3 altında lisanslanan PySide6 araç kitini kullanır.
+LGPL v3 lisansının bir kopyası şu adreste bulunabilir: https://www.gnu.org/licenses/lgpl-3.0.html
+LGPL v3 tarafından izin verildiği üzere, yalnızca bu tür değişikliklerde hata ayıklama amacıyla PySide6 kütüphanesini değiştirebilir ve Yazılım Ürününe tersine mühendislik uygulayabilirsiniz.
+
+5. GARANTİ REDDİ
+YAZILIM ÜRÜNÜ, HİÇBİR TÜRDE GARANTİ OLMAKSIZIN "OLDUĞU GİBİ" SAĞLANIR. YÜRÜRLÜKTEKİ KANUNLARIN İZİN VERDİĞİ AZAMİ ÖLÇÜDE YAZAR; TİCARİ ELVERİŞLİLİK VE BELİRLİ BİR AMACA UYGUNLUK ZIMNİ GARANTİLERİ DAHİL ANCAK BUNLARLA SINIRLI OLMAMAK ÜZERE, AÇIK VEYA ZIMNİ TÜM GARANTİLERİ REDDEDER.
+
+6. SORUMLULUĞUN SINIRLANDIRILMASI
+YAZAR, YAZILIM ÜRÜNÜNÜN KULLANILMASINDAN VEYA KULLANILAMAMASINDAN KAYNAKLANAN HİÇBİR ÖZEL, ARIZİ, DOLAYLI VEYA SONUÇ OLARAK ORTAYA ÇIKAN ZARARDAN (TİCARİ KAR KAYBI, ETKİNLİK KESİNTİSİ, TİCARİ BİLGİ KAYBI VEYA DİĞER HERHANGİ BİR MADDİ KAYIP DAHİL ANCAK BUNLARLA SINIRLI OLMAMAK ÜZERE), YAZARA BU TÜR ZARARLARIN OLASILIĞI BİLDİRİLMİŞ OLSA DAHİ HİÇBİR DURUMDA SORUMLU TUTULAMAZ.
+
+7. GEÇERLİ KANUN
+Bu EULA, Türkiye kanunlarına tabi olacak ve bu kanunlara göre yorumlanacaktır; yargı yetkisi Antalya mahkemelerine aittir.
