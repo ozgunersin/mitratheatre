@@ -77,7 +77,7 @@ jobs:
           ./appimagetool-x86_64.AppImage --appimage-extract
           
           mkdir -p AppDir/usr/bin
-          cp -r dist/MitraTheatre/* AppDir/usr/bin/
+          cp -r dist/mitra_theatre/* AppDir/usr/bin/
           
           convert icon.ico[0] icon.png || cp icon.ico icon.png
           
@@ -85,7 +85,7 @@ jobs:
           #!/bin/sh
           HERE="$(dirname "$(readlink -f "${0}")")"
           export LD_LIBRARY_PATH="${HERE}/usr/bin:${LD_LIBRARY_PATH}"
-          exec "${HERE}/usr/bin/MitraTheatre" "$@"
+          exec "${HERE}/usr/bin/mitra_theatre" "$@"
           EOF
           chmod +x AppDir/AppRun
           
@@ -93,7 +93,7 @@ jobs:
           [Desktop Entry]
           Type=Application
           Name=Mitra Theatre
-          Exec=MitraTheatre
+          Exec=mitra_theatre
           Icon=icon
           Categories=Utility;
           Terminal=false
