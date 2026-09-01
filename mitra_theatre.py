@@ -370,9 +370,9 @@ class ControlWindow(QMainWindow):
         dialog_layout.addLayout(header_layout)
 
         details_label = QLabel(
-            "<p><b>Version:</b> 1.2.10</p>"
+            "<p><b>Version:</b> 1.2</p>"
             "<p>&copy; 2026 Özgün Ersin. All Rights Reserved.</p>"
-            "<p>A professional dual-deck media controller designed for seamless presentations and live events.</p>"
+            "<p>A professional dual-deck media controller designed for seamless presentations and live events. Proudly free and open source.</p>"
             "<h3>Changelog</h3>"
             "<ul style='margin-top: 0px; margin-bottom: 10px;'>"
             "<li><b>v1.2:</b> Smart double-click loading (Video -> Deck A, Audio -> Deck B), enhanced LIVE/BLACK screen toggle, Changelog added.</li>"
@@ -397,9 +397,32 @@ class ControlWindow(QMainWindow):
         btn_donate = QPushButton("Donate")
         btn_donate.clicked.connect(self.open_donation_page)
 
+        # Create GitHub Repo Button with Vector Icon
+        github_repo_url = "https://github.com/ozgunersin/mitratheatre"
+        btn_github = QPushButton(" Github Repo")
+        
+        # Render inline SVG icon onto the button
+        svg_bytes = (
+            b"<svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='white'>"
+            b"<path d='M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 "
+            b"0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695"
+            b"-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99 "
+            b".105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225"
+            b"-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405"
+            b"c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 "
+            b"4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 "
+            b".315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z'/></svg>"
+        )
+        gh_pixmap = QPixmap()
+        gh_pixmap.loadFromData(svg_bytes)
+        btn_github.setIcon(QIcon(gh_pixmap))
+        btn_github.clicked.connect(lambda: QDesktopServices.openUrl(QUrl(github_repo_url)))
+
+        # Arrange buttons in order
         btn_layout.addWidget(btn_ok)
         btn_layout.addWidget(btn_eula)
         btn_layout.addWidget(btn_donate)
+        btn_layout.addWidget(btn_github)
         dialog_layout.addLayout(btn_layout)
 
         dialog.exec()
