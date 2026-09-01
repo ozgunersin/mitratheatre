@@ -3,7 +3,10 @@ name: Build Mitra Theatre
 on:
   push:
     branches: [ "main", "master" ]
-  workflow_dispatch: # This adds a manual "Run workflow" button
+  workflow_dispatch: 
+
+permissions:
+  contents: write
 
 jobs:
   build-windows:
@@ -18,11 +21,17 @@ jobs:
         run: pip install -r requirements.txt
       - name: Build Windows Executable
         run: pyinstaller mitra_theatre.spec
+      
+      # Run the pre-installed Inno Setup Compiler (Change 'setup.iss' to your actual script name)
+      - name: Build Windows Installer
+        run: iscc installer_windows.iss
+        
       - name: Upload Windows Artifact
         uses: actions/upload-artifact@v4
         with:
           name: MitraTheatre-Windows
-          path: dist/
+          # Upload only the compiled installer from Inno Setup's output folder
+          path: installer_output/*.exe
 
   build-macos:
     runs-on: macos-latest
@@ -68,7 +77,6 @@ jobs:
           ./appimagetool-x86_64.AppImage --appimage-extract
           
           mkdir -p AppDir/usr/bin
-          # Accommodate whether pyinstaller outputs to dist/mitra_theatre or dist/"Mitra Theatre"
           cp -r dist/mitra_theatre/* AppDir/usr/bin/ || cp -r dist/"Mitra Theatre"/* AppDir/usr/bin/
           
           convert icon.ico[0] icon.png || cp icon.ico icon.png
@@ -97,9 +105,10 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: MitraTheatre-Linux
-          path: "*.AppImage"
+          path: "Mitra_Theatre-x86_64.AppImage"
+          
   create-release:
-    needs: [build-windows, build-macos, build-linux] # Waits for builds to finish
+    needs: [build-windows, build-macos, build-linux] 
     runs-on: ubuntu-latest
     steps:
       - name: Download all artifacts
@@ -108,10 +117,10 @@ jobs:
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
         with:
-          tag_name: "v1.0.${{ github.run_number }}"
-          name: "Mitra Theatre Build ${{ github.run_number }}"
+          tag_name: "v1.2.${{ github.run_number }}"
+          name: "Mitra Theatre v1.2 Build ${{ github.run_number }}"
           files: |
-            MitraTheatre-Windows-Installer/*.exe
+            MitraTheatre-Windows/**/*.exe
             MitraTheatre-macOS/*.dmg
             MitraTheatre-Linux/*.AppImage
         env:
