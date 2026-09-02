@@ -397,13 +397,13 @@ class ControlWindow(QMainWindow):
         details_label = QLabel(
             "<p><b>Version:</b> 1.2</p>"
             "<p>&copy; 2026 Özgün Ersin. All Rights Reserved.</p>"
-            "<p>A professional dual-deck media controller designed for seamless presentations and live events.</p>"
+            "<p>A professional dual-deck media controller designed for seamless presentations and live events. Proudly FOSS.</p>"
             "<h3>Changelog</h3>"
             "<ul style='margin-top: 0px; margin-bottom: 10px;'>"
             "<li><b>v1.2:</b> Smart double-click loading (Video -> Deck A, Audio -> Deck B), enhanced LIVE/BLACK screen toggle, Changelog added.</li>"
             "<li><b>v1.1:</b> Output Blanking switch added, EULA file integration, UI refinements.</li>"
             "</ul>"
-            "<p><small>This proprietary software utilizes the PySide6 toolkit, which is licensed under the LGPL v3.</small></p>"
+            f'<p>If you find Mitra Theatre useful, consider <a href="{DONATION_URL}">supporting its development</a>.</p>'
         )
         details_label.setWordWrap(True)
         details_label.setOpenExternalLinks(True)
