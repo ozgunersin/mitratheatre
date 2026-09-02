@@ -2,7 +2,7 @@ name: Build Mitra Theatre
 
 on:
   push:
-    branches: [ "main", "master" ]
+    branches: [ "main", "master", "Release" ]
   workflow_dispatch: 
 
 permissions:
