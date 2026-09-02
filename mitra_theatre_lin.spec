@@ -24,7 +24,7 @@ exe = EXE(
     a.scripts,
     [],
     exclude_binaries=True,
-    name='mitra_theatre',
+    name='Mitra_Theatre',
     debug=False,
     bootloader_ignore_signals=False,
     strip=False,
