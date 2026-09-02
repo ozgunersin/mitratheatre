@@ -12,9 +12,9 @@ jobs:
   build-windows:
     runs-on: windows-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: Set up Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v6
         with:
           python-version: '3.10'
       - name: Install dependencies
@@ -27,7 +27,7 @@ jobs:
         run: iscc installer_windows.iss
         
       - name: Upload Windows Artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: MitraTheatre-Windows
           # Upload only the compiled installer from Inno Setup's output folder
@@ -36,9 +36,9 @@ jobs:
   build-macos:
     runs-on: macos-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: Set up Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v6
         with:
           python-version: '3.10'
       - name: Install dependencies
@@ -51,7 +51,7 @@ jobs:
           chmod +x create_dmg.sh
           ./create_dmg.sh
       - name: Upload macOS Artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: MitraTheatre-macOS
           path: "*.dmg"
@@ -59,9 +59,9 @@ jobs:
   build-linux:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: Set up Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v6
         with:
           python-version: '3.10'
       - name: Install dependencies
@@ -78,7 +78,6 @@ jobs:
           
           mkdir -p AppDir/usr/bin
           cp -r dist/mitra_theatre/* AppDir/usr/bin/
-          rm -f AppDir/usr/bin/_internal/libxkbcommon.so*
           
           convert icon.ico[0] icon.png || cp icon.ico icon.png
           
@@ -103,7 +102,7 @@ jobs:
           
           ARCH=x86_64 ./squashfs-root/AppRun AppDir Mitra_Theatre-x86_64.AppImage
       - name: Upload Linux Artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: MitraTheatre-Linux
           path: "Mitra_Theatre-x86_64.AppImage"
