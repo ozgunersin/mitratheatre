@@ -1,11 +1,14 @@
 # -*- mode: python ; coding: utf-8 -*-
+import os
 
+block_cipher = None
+HAS_ICON = os.path.exists('icon.ico')
 
 a = Analysis(
     ['mitra_theatre.py'],
     pathex=[],
     binaries=[],
-    datas=[('icon.ico', '.'), ('EULA.txt', '.')],
+    datas=[('EULA.txt', '.'), ('README.md', '.')] + ([('icon.ico', '.')] if HAS_ICON else []),
     hiddenimports=[],
     hookspath=[],
     hooksconfig={},
@@ -14,7 +17,7 @@ a = Analysis(
     noarchive=False,
     optimize=0,
 )
-pyz = PYZ(a.pure)
+pyz = PYZ(a.pure, a.zipped_data, cipher=block_cipher)
 
 exe = EXE(
     pyz,
@@ -40,5 +43,5 @@ coll = COLLECT(
     strip=False,
     upx=True,
     upx_exclude=[],
-    name='mitra_theatre',
+    name='Mitra_Theatre',
 )
