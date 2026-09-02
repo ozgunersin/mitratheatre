@@ -77,7 +77,7 @@ jobs:
           ./appimagetool-x86_64.AppImage --appimage-extract
           
           mkdir -p AppDir/usr/bin
-          cp -r dist/Mitra_Theatre/* AppDir/usr/bin/
+          cp -r dist/mitra_theatre/* AppDir/usr/bin/
           rm -f AppDir/usr/bin/_internal/libxkbcommon.so*
           
           convert icon.ico[0] icon.png || cp icon.ico icon.png
