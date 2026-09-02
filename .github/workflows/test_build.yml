@@ -90,7 +90,7 @@ jobs:
         mkdir -p AppDir/usr/bin
         
         # Copy PyInstaller distribution contents
-        cp -r "dist/Mitra_Theatre/"* AppDir/usr/bin/
+        cp -r "dist/Mitra Theatre/"* AppDir/usr/bin/
         
         # Remove PySide6 bundled xkbcommon library to prevent SEGV on Wayland/X11
         rm -f AppDir/usr/bin/_internal/libxkbcommon.so*
@@ -107,80 +107,9 @@ jobs:
       run: |
         ARCH=x86_64 appimagetool AppDir MitraTheatre-x86_64.AppImage
 
-    - name: Assemble Debian Package Structure
-      run: |
-        mkdir -p debian_pkg/DEBIAN
-        mkdir -p debian_pkg/opt/MitraTheatre
-        mkdir -p debian_pkg/usr/share/applications
-        mkdir -p debian_pkg/usr/share/icons/hicolor/256x256/apps
-
-        cp DEBIAN/control debian_pkg/DEBIAN/
-        cp -r "dist/Mitra Theatre/"* debian_pkg/opt/MitraTheatre/
-        rm -f debian_pkg/opt/MitraTheatre/_internal/libxkbcommon.so*
-        
-        cp mitra-theatre.desktop debian_pkg/usr/share/applications/
-        cp icon.png debian_pkg/usr/share/icons/hicolor/256x256/apps/mitra-theatre.png
-
-        chmod +x "debian_pkg/opt/MitraTheatre/mitra_theatre"
-
-    - name: Build Debian Package
-      run: |
-        dpkg-deb --build debian_pkg mitra-theatre_1.2_amd64.deb
-
-    - name: Upload Linux Artifacts
+    - name: Upload AppImage Artifact
       uses: actions/upload-artifact@v4
       with:
-        name: linux-packages
-        path: |
-          MitraTheatre-x86_64.AppImage
-          mitra-theatre_1.2_amd64.debbuild-linux:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.10'
-      - name: Install dependencies
-        run: pip install -r requirements.txt
-      - name: Compile with PyInstaller
-        run: pyinstaller mitra_theatre_lin.spec
-      - name: Install system tools
-        run: sudo apt-get update && sudo apt-get install -y imagemagick
-      - name: Package AppImage
-        run: |
-          wget -q -c "https://github.com/AppImage/appimagetool/releases/download/continuous/appimagetool-x86_64.AppImage"
-          chmod +x appimagetool-x86_64.AppImage
-          ./appimagetool-x86_64.AppImage --appimage-extract
-          
-          mkdir -p AppDir/usr/bin
-          cp -r dist/mitra_theatre/* AppDir/usr/bin/
-          
-          convert icon.ico[0] icon.png || cp icon.ico icon.png
-          
-          cat << 'EOF' > AppDir/AppRun
-          #!/bin/sh
-          HERE="$(dirname "$(readlink -f "${0}")")"
-          export LD_LIBRARY_PATH="${HERE}/usr/bin:${LD_LIBRARY_PATH}"
-          exec "${HERE}/usr/bin/mitra_theatre" "$@"
-          EOF
-          chmod +x AppDir/AppRun
-          
-          cat << 'EOF' > AppDir/mitra_theatre.desktop
-          [Desktop Entry]
-          Type=Application
-          Name=Mitra_Theatre
-          Exec=mitra_theatre
-          Icon=icon
-          Categories=Utility;
-          Terminal=false
-          EOF
-          cp icon.png AppDir/
-          
-          ARCH=x86_64 ./squashfs-root/AppRun AppDir Mitra_Theatre-x86_64.AppImage
-      - name: Upload Linux Artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: MitraTheatre-Linux
-          path: "Mitra_Theatre-x86_64.AppImage"
+        name: MitraTheatre-AppImage
+        path: MitraTheatre-x86_64.AppImage
       
