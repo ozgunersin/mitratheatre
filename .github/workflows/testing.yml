@@ -1,4 +1,4 @@
-name: Build Mitra Theatre
+name: Build Mitra Theatre Testing Branch
 
 on:
   push:
