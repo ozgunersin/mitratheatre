@@ -421,7 +421,7 @@ class ControlWindow(QMainWindow):
         btn_readme = QPushButton("Read Me")
         btn_readme.clicked.connect(lambda: [dialog.accept(), self.open_readme()])
 
-        github_repo_url = "https://github.com/ozgunersin/mitra-theatre"
+        github_repo_url = "https://github.com/ozgunersin/mitratheatre"
         btn_github = QPushButton(" Github Repo")
         
         svg_bytes = (
