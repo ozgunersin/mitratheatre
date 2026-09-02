@@ -4,7 +4,7 @@ a = Analysis(
     ['mitra_theatre.py'],
     pathex=[],
     binaries=[],
-    datas=[('EULA.txt', '.'), ('README.md', '.')]
+    datas=[('EULA.txt', '.'), ('README.md', '.')],
     hiddenimports=[],
     hookspath=[],
     hooksconfig={},
