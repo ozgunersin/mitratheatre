@@ -77,10 +77,7 @@ jobs:
     - name: Install AppImage Tooling
       run: |
         sudo apt-get update
-        sudo apt-get install -y wget file desktop-file-utils
-        wget -q -c "https://github.com/AppImage/AppImageKit/releases/download/13/appimagetool-x86_64.AppImage"
-        chmod +x appimagetool
-        sudo mv appimagetool /usr/local/bin/
+        sudo apt-get install -y appimage-builder desktop-file-utils
 
     - name: Build Executable with PyInstaller
       run: pyinstaller mitra_theatre_linux.spec
