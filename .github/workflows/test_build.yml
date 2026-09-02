@@ -78,7 +78,7 @@ jobs:
       run: |
         sudo apt-get update
         sudo apt-get install -y wget file desktop-file-utils
-        wget https://github.com/AppImage/AppImageKit/releases/download/13/appimagetool-x86_64.AppImage -O appimagetool
+        wget -q -c "https://github.com/AppImage/AppImageKit/releases/download/13/appimagetool-x86_64.AppImage"
         chmod +x appimagetool
         sudo mv appimagetool /usr/local/bin/
 
