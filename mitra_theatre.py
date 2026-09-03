@@ -95,6 +95,24 @@ QSlider::groove:vertical {
 QSlider::handle:vertical {
     background: #4CAF50; border: 1px solid #4CAF50; width: 14px; height: 14px; margin: 0 -4px; border-radius: 7px;
 }
+QPushButton#smallToggleBtn {
+    background-color: #2D2D30;
+    color: #888888;
+    border: 1px solid #444444;
+    border-radius: 4px;
+    padding: 4px 8px;
+    font-size: 13px;
+    font-weight: bold;
+}
+QPushButton#smallToggleBtn:hover { 
+    background-color: #3F3F46; 
+    color: #FFFFFF; 
+}
+QPushButton#smallToggleBtn:checked {
+    background-color: #2E7D32;
+    color: #FFFFFF;
+    border: 1px solid #4CAF50;
+}
 """
 
 class EulaDialog(QDialog):
@@ -181,6 +199,7 @@ class ControlWindow(QMainWindow):
 
         # State variable for the screen feed switch
         self.is_screen_blanked = False
+        self.current_deck_a_index = -1
 
         # --- DUAL MEDIA ENGINE SETUP ---
         self.video_player = QMediaPlayer()
@@ -240,11 +259,39 @@ class ControlWindow(QMainWindow):
         self.lbl_deck_a_status.setStyleSheet("color: #4CAF50; font-weight: bold;")
         deck_a_controls_layout.addWidget(self.lbl_deck_a_status)
 
+        # Preview Label + Centered Side Controls (Auto & Replay)
+        preview_controls_layout = QHBoxLayout()
         self.lbl_preview = QLabel()
         self.lbl_preview.setObjectName("previewLabel")
         self.lbl_preview.setFixedSize(320, 180) 
         self.lbl_preview.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        deck_a_controls_layout.addWidget(self.lbl_preview)
+        preview_controls_layout.addWidget(self.lbl_preview)
+
+        # Centered Auto & Minimalist Replay Button Stack
+        side_controls_layout = QVBoxLayout()
+        side_controls_layout.setAlignment(Qt.AlignmentFlag.AlignCenter)
+
+        self.btn_auto = QPushButton("Auto")
+        self.btn_auto.setObjectName("smallToggleBtn")
+        self.btn_auto.setCheckable(True)
+        self.btn_auto.setFixedSize(68, 32)
+
+        # Minimalist Monochrome Replay Symbol (Unicode ↺)
+        self.btn_repeat = QPushButton("↺")
+        self.btn_repeat.setObjectName("smallToggleBtn")
+        self.btn_repeat.setCheckable(True)
+        self.btn_repeat.setFixedSize(68, 32)
+        self.btn_repeat.setStyleSheet("font-size: 18px;")  # Makes the ↺ symbol larger
+        self.btn_repeat.clicked.connect(self.on_repeat_clicked)
+
+        side_controls_layout.addStretch()
+        side_controls_layout.addWidget(self.btn_auto, alignment=Qt.AlignmentFlag.AlignCenter)
+        side_controls_layout.addWidget(self.btn_repeat, alignment=Qt.AlignmentFlag.AlignCenter)
+        side_controls_layout.addStretch()
+
+        preview_controls_layout.addLayout(side_controls_layout)
+
+        deck_a_controls_layout.addLayout(preview_controls_layout)
 
         seek_a_layout = QHBoxLayout()
         self.lbl_time_a = QLabel("00:00 / 00:00")
@@ -288,6 +335,7 @@ class ControlWindow(QMainWindow):
         # --- DECK B (AUDIO) ---
         deck_b_group = QGroupBox("Deck B: Background Music")
         deck_b_layout = QHBoxLayout(deck_b_group)
+        deck_b_layout.setContentsMargins(10, 5, 10, 5)
         
         deck_b_controls_layout = QVBoxLayout()
         self.lbl_deck_b_status = QLabel("Currently Loaded: None")
@@ -306,6 +354,7 @@ class ControlWindow(QMainWindow):
         btn_layout_b = QHBoxLayout()
         self.btn_load_b = QPushButton("Load")
         self.btn_load_b.setObjectName("loadBtn")
+        self.btn_playpause_b.setText("▶ Play") if hasattr(self, 'btn_playpause_b') else None
         self.btn_playpause_b = QPushButton("▶ Play")
         self.btn_stop_b = QPushButton("■ Stop")
         btn_layout_b.addWidget(self.btn_load_b)
@@ -331,12 +380,23 @@ class ControlWindow(QMainWindow):
         playlist_layout = QVBoxLayout(playlist_group)
         self.list_widget = QListWidget()
         playlist_layout.addWidget(self.list_widget)
-        self.btn_add = QPushButton("+ Add Files to Library")
-        playlist_layout.addWidget(self.btn_add)
+        
+        # Action Buttons Row (Add & Clear List)
+        playlist_btn_layout = QHBoxLayout()
+        
+        self.btn_add = QPushButton("+ Add Files")
+        self.btn_clear = QPushButton("Clear List")
+        self.btn_clear.setStyleSheet("background-color: #C62828; border: none;")
+        self.btn_clear.clicked.connect(self.clear_playlist)
+        
+        playlist_btn_layout.addWidget(self.btn_add)
+        playlist_btn_layout.addWidget(self.btn_clear)
+        
+        playlist_layout.addLayout(playlist_btn_layout)
         
         grid.addWidget(playlist_group, 0, 1, 2, 1) 
         grid.setColumnStretch(0, 1) 
-        grid.setColumnStretch(1, 1) 
+        grid.setColumnStretch(1, 1)
 
         # --- CONNECTIONS ---
         self.device_combo.currentIndexChanged.connect(self.change_audio_device)
@@ -360,6 +420,46 @@ class ControlWindow(QMainWindow):
         self.slider_seek_b.sliderMoved.connect(self.set_position_b)
         self.audio_player.positionChanged.connect(self.position_changed_b)
         self.audio_player.durationChanged.connect(self.duration_changed_b)
+
+    # --- AUTO PLAY & REPEAT LOGIC ---
+    def on_repeat_clicked(self):
+        if self.btn_repeat.isChecked():
+            self.btn_auto.setChecked(True)
+
+    def load_deck_a(self, index_override=None):
+        selected = index_override if index_override is not None else self.list_widget.currentRow()
+        if selected >= 0 and selected < len(self.playlist):
+            self.current_deck_a_index = selected
+            self.list_widget.setCurrentRow(selected)
+            file_path = self.playlist[selected]
+            self.video_player.setSource(QUrl.fromLocalFile(file_path))
+            self.lbl_deck_a_status.setText(f"Loaded: {os.path.basename(file_path)}")
+            self.video_player.stop() 
+            self.display_window.video_widget.hide()
+            self.lbl_preview.clear() 
+            self.btn_playpause_a.setText("▶ Play")
+
+    def check_video_status(self, status):
+        if status == QMediaPlayer.MediaStatus.EndOfMedia:
+            self.display_window.video_widget.hide()
+            self.btn_playpause_a.setText("▶ Play")
+            
+            if self.btn_auto.isChecked() and self.playlist:
+                next_index = self.find_next_video_index(self.current_deck_a_index + 1)
+                
+                if next_index == -1 and self.btn_repeat.isChecked():
+                    next_index = self.find_next_video_index(0)
+                
+                if next_index != -1:
+                    self.load_deck_a(index_override=next_index)
+                    self.toggle_play_a()
+
+    def find_next_video_index(self, start_index):
+        for i in range(start_index, len(self.playlist)):
+            ext = os.path.splitext(self.playlist[i])[1].lower()
+            if ext not in ['.mp3', '.wav', '.flac', '.aac', '.ogg', '.m4a']:
+                return i
+        return -1
 
     # --- BLANK SCREEN CONTROL ---
     def toggle_blank_screen(self):
@@ -395,13 +495,12 @@ class ControlWindow(QMainWindow):
         dialog_layout.addLayout(header_layout)
 
         details_label = QLabel(
-            "<p><b>Version:</b> 1.2</p>"
+            "<p><b>Version:</b> 1.3</p>"
             "<p>&copy; 2026 Özgün Ersin. All Rights Reserved.</p>"
             "<p>A professional dual-deck media controller designed for seamless presentations and live events. Proudly FOSS.</p>"
             "<h3>Changelog</h3>"
             "<ul style='margin-top: 0px; margin-bottom: 10px;'>"
-            "<li><b>v1.2:</b> Smart double-click loading (Video -> Deck A, Audio -> Deck B), enhanced LIVE/BLACK screen toggle, Changelog added.</li>"
-            "<li><b>v1.1:</b> Output Blanking switch added, EULA file integration, UI refinements.</li>"
+            "<li><b>v1.3:</b> Added Auto Play queue & Replay toggle buttons (soft-green active indicators), Master Playlist 'Clear List' button with confirmation dialog, enlarged monochrome replay symbol.</li>"
             "</ul>"
             f'<p>If you find Mitra Theatre useful, consider <a href="{DONATION_URL}">supporting its development</a>.</p>'
         )
@@ -421,7 +520,7 @@ class ControlWindow(QMainWindow):
         btn_readme = QPushButton("Read Me")
         btn_readme.clicked.connect(lambda: [dialog.accept(), self.open_readme()])
 
-        github_repo_url = "https://github.com/ozgunersin/mitra-theatre"
+        github_repo_url = "https://github.com/ozgunersin/mitratheatre"
         btn_github = QPushButton(" Github Repo")
         
         svg_bytes = (
@@ -472,7 +571,26 @@ class ControlWindow(QMainWindow):
         for f in files:
             self.playlist.append(f)
             self.list_widget.addItem(os.path.basename(f))
+    def clear_playlist(self):
+        if not self.playlist:
+            return
 
+        reply = QMessageBox.question(
+            self,
+            "Clear Master Playlist",
+            "Are you sure you want to remove all files from the playlist?",
+            QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No,
+            QMessageBox.StandardButton.No
+        )
+
+        if reply == QMessageBox.StandardButton.Yes:
+            self.stop_a()
+            self.stop_b()
+            self.playlist.clear()
+            self.list_widget.clear()
+            self.current_deck_a_index = -1
+            self.lbl_deck_a_status.setText("Currently Loaded: None")
+            self.lbl_deck_b_status.setText("Currently Loaded: None")
     def handle_playlist_doubleclick(self, item):
         selected = self.list_widget.currentRow()
         if selected >= 0:
@@ -489,17 +607,6 @@ class ControlWindow(QMainWindow):
         return f"{m:02d}:{s:02d}"
 
     # --- DECK A LOGIC ---
-    def load_deck_a(self):
-        selected = self.list_widget.currentRow()
-        if selected >= 0:
-            file_path = self.playlist[selected]
-            self.video_player.setSource(QUrl.fromLocalFile(file_path))
-            self.lbl_deck_a_status.setText(f"Loaded: {os.path.basename(file_path)}")
-            self.video_player.stop() 
-            self.display_window.video_widget.hide()
-            self.lbl_preview.clear() 
-            self.btn_playpause_a.setText("▶ Play")
-
     def toggle_play_a(self):
         if self.video_player.source().isEmpty():
             return
@@ -531,11 +638,6 @@ class ControlWindow(QMainWindow):
 
     def duration_changed_a(self, duration):
         self.slider_seek_a.setRange(0, duration)
-
-    def check_video_status(self, status):
-        if status == QMediaPlayer.MediaStatus.EndOfMedia:
-            self.display_window.video_widget.hide()
-            self.btn_playpause_a.setText("▶ Play")
 
     def process_video_frame(self, frame: QVideoFrame):
         if self.is_screen_blanked:
