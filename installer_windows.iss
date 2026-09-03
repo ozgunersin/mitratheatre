@@ -8,7 +8,7 @@
 ;   dist\Mitra Theatre\Mitra Theatre.exe
 
 #define MyAppName "Mitra Theatre"
-#define MyAppVersion "1.2"
+#define MyAppVersion "1.3"
 #define MyAppPublisher "Özgün Ersin"
 #define MyAppExeName "Mitra Theatre.exe"
 
