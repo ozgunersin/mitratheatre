@@ -11,7 +11,7 @@ a = Analysis(
     ['mitra_theatre.py'],
     pathex=[],
     binaries=[],
-    datas=[('EULA.txt', '.')] + ([('icon.ico', '.')] if HAS_ICON else []),
+    datas=[('EULA.txt', '.'), ('README.md', '.')] + ([('icon.ico', '.')] if HAS_ICON else []),
     hiddenimports=[],
     hookspath=[],
     hooksconfig={},

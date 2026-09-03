@@ -124,6 +124,32 @@ class EulaDialog(QDialog):
         self.close_btn.clicked.connect(self.accept)
         layout.addWidget(self.close_btn)
 
+class ReadmeDialog(QDialog):
+    def __init__(self, parent=None):
+        super().__init__(parent)
+        self.setWindowTitle("Mitra Theatre - Readme")
+        self.resize(700, 500)
+        
+        layout = QVBoxLayout(self)
+        
+        self.text_edit = QTextEdit(self)
+        self.text_edit.setReadOnly(True)
+        
+        readme_path = resource_path("README.md")
+        try:
+            with open(readme_path, "r", encoding="utf-8") as file:
+                self.text_edit.setMarkdown(file.read())
+        except Exception as e:
+            self.text_edit.setText(
+                f"Error: README.md could not be loaded.\nDetails: {str(e)}"
+            )
+            
+        layout.addWidget(self.text_edit)
+        
+        self.close_btn = QPushButton("Close", self)
+        self.close_btn.clicked.connect(self.accept)
+        layout.addWidget(self.close_btn)
+
 class ClickableSlider(QSlider):
     def mousePressEvent(self, event):
         super().mousePressEvent(event)
@@ -316,7 +342,6 @@ class ControlWindow(QMainWindow):
         self.device_combo.currentIndexChanged.connect(self.change_audio_device)
         self.btn_add.clicked.connect(self.add_media)
         
-        # Playlist interaction: Smart double-click loading
         self.list_widget.itemDoubleClicked.connect(self.handle_playlist_doubleclick)
         
         self.btn_load_a.clicked.connect(self.load_deck_a)
@@ -372,13 +397,12 @@ class ControlWindow(QMainWindow):
         details_label = QLabel(
             "<p><b>Version:</b> 1.2</p>"
             "<p>&copy; 2026 Özgün Ersin. All Rights Reserved.</p>"
-            "<p>A professional dual-deck media controller designed for seamless presentations and live events. Proudly free and open source.</p>"
+            "<p>A professional dual-deck media controller designed for seamless presentations and live events. Proudly FOSS.</p>"
             "<h3>Changelog</h3>"
             "<ul style='margin-top: 0px; margin-bottom: 10px;'>"
             "<li><b>v1.2:</b> Smart double-click loading (Video -> Deck A, Audio -> Deck B), enhanced LIVE/BLACK screen toggle, Changelog added.</li>"
             "<li><b>v1.1:</b> Output Blanking switch added, EULA file integration, UI refinements.</li>"
             "</ul>"
-            "<p><small>This proprietary software utilizes the PySide6 toolkit, which is licensed under the LGPL v3.</small></p>"
             f'<p>If you find Mitra Theatre useful, consider <a href="{DONATION_URL}">supporting its development</a>.</p>'
         )
         details_label.setWordWrap(True)
@@ -394,14 +418,12 @@ class ControlWindow(QMainWindow):
         btn_eula = QPushButton("View EULA")
         btn_eula.clicked.connect(lambda: [dialog.accept(), self.open_eula()])
 
-        btn_donate = QPushButton("Donate")
-        btn_donate.clicked.connect(self.open_donation_page)
+        btn_readme = QPushButton("Read Me")
+        btn_readme.clicked.connect(lambda: [dialog.accept(), self.open_readme()])
 
-        # Create GitHub Repo Button with Vector Icon
         github_repo_url = "https://github.com/ozgunersin/mitratheatre"
         btn_github = QPushButton(" Github Repo")
         
-        # Render inline SVG icon onto the button
         svg_bytes = (
             b"<svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='white'>"
             b"<path d='M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 "
@@ -418,10 +440,9 @@ class ControlWindow(QMainWindow):
         btn_github.setIcon(QIcon(gh_pixmap))
         btn_github.clicked.connect(lambda: QDesktopServices.openUrl(QUrl(github_repo_url)))
 
-        # Arrange buttons in order
         btn_layout.addWidget(btn_ok)
         btn_layout.addWidget(btn_eula)
-        btn_layout.addWidget(btn_donate)
+        btn_layout.addWidget(btn_readme)
         btn_layout.addWidget(btn_github)
         dialog_layout.addLayout(btn_layout)
 
@@ -433,6 +454,10 @@ class ControlWindow(QMainWindow):
     def open_eula(self):
         eula_dialog = EulaDialog(self)
         eula_dialog.exec()
+
+    def open_readme(self):
+        readme_dialog = ReadmeDialog(self)
+        readme_dialog.exec()
 
     def change_audio_device(self, index):
         if 0 <= index < len(self.available_audio_devices):
@@ -452,7 +477,6 @@ class ControlWindow(QMainWindow):
         selected = self.list_widget.currentRow()
         if selected >= 0:
             file_path = self.playlist[selected]
-            # Check file extension to route audio to Deck B, everything else to Deck A
             ext = os.path.splitext(file_path)[1].lower()
             if ext in ['.mp3', '.wav', '.flac', '.aac', '.ogg', '.m4a']:
                 self.load_deck_b()
@@ -565,17 +589,14 @@ class ControlWindow(QMainWindow):
     def duration_changed_b(self, duration):
         self.slider_seek_b.setRange(0, duration)
 
-    # --- CLEAN SHUTDOWN FIX FOR LINUX & MAC ---
+    # --- CLEAN SHUTDOWN FIX (PREVENTS LINUX/MAC EXIT SEGV) ---
     def closeEvent(self, event):
-        # 1. Stop playback on both decks
         if hasattr(self, 'video_player'):
             self.video_player.stop()
-            # Disconnect the video frame sink callback to prevent signals on a dying thread
             try:
                 self.display_window.video_widget.videoSink().videoFrameChanged.disconnect(self.process_video_frame)
             except (TypeError, RuntimeError):
                 pass
-            # Detach outputs from media players
             self.video_player.setVideoOutput(None)
             self.video_player.setAudioOutput(None)
 
@@ -583,11 +604,9 @@ class ControlWindow(QMainWindow):
             self.audio_player.stop()
             self.audio_player.setAudioOutput(None)
 
-        # 2. Safely close secondary display window
         if hasattr(self, 'display_window') and self.display_window:
             self.display_window.close()
 
-        # 3. Accept the event to close normally
         event.accept()
 
 def main():
