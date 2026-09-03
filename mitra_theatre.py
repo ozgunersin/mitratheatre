@@ -439,20 +439,26 @@ class ControlWindow(QMainWindow):
             self.lbl_preview.clear() 
             self.btn_playpause_a.setText("▶ Play")
 
+    from PySide6.QtCore import QTimer  # Ensure QTimer is imported at top or used here
+
     def check_video_status(self, status):
         if status == QMediaPlayer.MediaStatus.EndOfMedia:
             self.display_window.video_widget.hide()
             self.btn_playpause_a.setText("▶ Play")
-            
+
             if self.btn_auto.isChecked() and self.playlist:
                 next_index = self.find_next_video_index(self.current_deck_a_index + 1)
-                
+
                 if next_index == -1 and self.btn_repeat.isChecked():
                     next_index = self.find_next_video_index(0)
-                
+
                 if next_index != -1:
-                    self.load_deck_a(index_override=next_index)
-                    self.toggle_play_a()
+                    # Defer execution to next event loop iteration to prevent GStreamer re-entrancy SEGV
+                    QTimer.singleShot(0, lambda idx=next_index: self.trigger_auto_next(idx))
+
+    def trigger_auto_next(self, index):
+        self.load_deck_a(index_override=index)
+        self.toggle_play_a()
 
     def find_next_video_index(self, start_index):
         for i in range(start_index, len(self.playlist)):
@@ -711,7 +717,16 @@ class ControlWindow(QMainWindow):
 
         event.accept()
 
+from PySide6.QtCore import QTimer
+
 def main():
+    # --- THE LINUX WAYLAND FIX ---
+    # Force Qt to use the X11 (xcb) backend instead of Wayland.
+    # This bypasses Wayland's strict window-placement security rules
+    # and allows the projector to be moved to the secondary screen.
+    if platform.system() == "Linux":
+        os.environ["QT_QPA_PLATFORM"] = "xcb"
+
     app = QApplication(sys.argv)
     app.setStyleSheet(STYLE_SHEET)
 
@@ -720,24 +735,45 @@ def main():
         app.setWindowIcon(QIcon(icon_file))
 
     display = DisplayWindow()
+    controller = ControlWindow(display)
+
     screens = app.screens()
 
     if len(screens) > 1:
-        second_screen = screens[1]
-        display.setGeometry(second_screen.geometry())
-        display.showFullScreen()
+        primary_screen = app.primaryScreen()
+        secondary_screen = None
+
+        # Identify the secondary monitor
+        for s in screens:
+            if s != primary_screen:
+                secondary_screen = s
+                break
+
+        if secondary_screen:
+            # Under X11/xcb, we can simply move the window to the exact coordinates
+            display.setScreen(secondary_screen)
+            display.move(secondary_screen.geometry().topLeft())
+            display.showFullScreen()
+        else:
+            display.resize(800, 600)
+            display.show()
     else:
         display.resize(800, 600)
         display.show()
 
-    controller = ControlWindow(display)
-    controller.setGeometry(screens[0].geometry().x() + 100, screens[0].geometry().y() + 100, 1000, 750)
-    
+    # Position ControlWindow on the primary monitor
+    primary = app.primaryScreen()
+    if primary:
+        controller.setScreen(primary)
+        geo = primary.geometry()
+        controller.move(geo.topLeft().x() + 50, geo.topLeft().y() + 50)
+    else:
+        controller.move(100, 100)
+
     if os.path.exists(icon_file):
         controller.setWindowIcon(QIcon(icon_file))
-        
-    controller.show()
 
+    controller.show()
     sys.exit(app.exec())
 
 if __name__ == "__main__":
