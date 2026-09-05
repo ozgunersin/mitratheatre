@@ -403,6 +403,7 @@ class ControlWindow(QMainWindow):
         self.btn_add.clicked.connect(self.add_media)
         
         self.list_widget.itemDoubleClicked.connect(self.handle_playlist_doubleclick)
+        self.list_widget.setSelectionMode(QListWidget.SelectionMode.ExtendedSelection)
         
         self.btn_load_a.clicked.connect(self.load_deck_a)
         self.btn_playpause_a.clicked.connect(self.toggle_play_a)
@@ -606,6 +607,19 @@ class ControlWindow(QMainWindow):
             self.current_deck_a_index = -1
             self.lbl_deck_a_status.setText("Currently Loaded: None")
             self.lbl_deck_b_status.setText("Currently Loaded: None")
+    def remove_selected_items(self):
+        selected_items = self.list_widget.selectedItems()
+        if not selected_items:
+            return
+
+        # Delete items in reverse order to preserve index alignment
+        for item in reversed(sorted(selected_items, key=lambda x: self.list_widget.row(x))):
+            row = self.list_widget.row(item)
+            self.list_widget.takeItem(row)
+            if 0 <= row < len(self.playlist):
+                self.playlist.pop(row)
+                
+        self.current_deck_a_index = -1
     def handle_playlist_doubleclick(self, item):
         selected = self.list_widget.currentRow()
         if selected >= 0:
