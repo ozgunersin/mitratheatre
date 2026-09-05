@@ -570,13 +570,22 @@ class ControlWindow(QMainWindow):
             self.video_audio_output.setDevice(selected_device)
             self.audio_only_output.setDevice(selected_device)
 
-    def add_media(self):
-        files, _ = QFileDialog.getOpenFileNames(
-            self, "Select Media", "", "Media Files (*.mp4 *.avi *.mkv *.mov *.mp3 *.wav)"
-        )
+    def add_media(self, files=None):
+        if not files:
+            files, _ = QFileDialog.getOpenFileNames(
+                self, "Select Media", "", "Media Files (*.mp4 *.avi *.mkv *.mov *.mp3 *.wav *.flac *.aac *.ogg *.m4a)"
+            )
         for f in files:
             self.playlist.append(f)
-            self.list_widget.addItem(os.path.basename(f))
+            item = QListWidgetItem(os.path.basename(f))
+            
+            ext = os.path.splitext(f)[1].lower()
+            if ext in ['.mp3', '.wav', '.flac', '.aac', '.ogg', '.m4a']:
+                item.setForeground(QColor("#888888"))  # Gray for Audio
+            else:
+                item.setForeground(QColor("#4CAF50"))  # Green for Video
+                
+            self.list_widget.addItem(item)
     def clear_playlist(self):
         if not self.playlist:
             return
