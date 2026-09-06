@@ -599,8 +599,8 @@ class ControlWindow(QMainWindow):
                 item.setForeground(QColor("#4CAF50"))  # Green for Video
                 
             self.list_widget.addItem(item)
-   def save_playlist(self):
-        if not self.playlist:
+     def save_playlist(self):
+       if not self.playlist:
             return
         file_path, _ = QFileDialog.getSaveFileName(self, "Save Playlist", "", "Playlist Files (*.m3u *.txt)")
         if file_path:
