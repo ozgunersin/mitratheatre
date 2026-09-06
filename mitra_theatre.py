@@ -8,7 +8,7 @@ from PySide6.QtWidgets import (QApplication, QMainWindow, QWidget, QVBoxLayout,
                                QMessageBox, QDialog, QTextEdit)
 from PySide6.QtMultimedia import QMediaPlayer, QAudioOutput, QMediaDevices, QVideoFrame
 from PySide6.QtMultimediaWidgets import QVideoWidget
-from PySide6.QtCore import QUrl, Qt, Qtimer
+from PySide6.QtCore import QUrl, Qt, QTimer
 from PySide6.QtGui import QPixmap, QIcon, QDesktopServices, QColor
 
 # --- RESOURCE PATH HELPER (FOR PYINSTALLER ICON & DATA BUNDLING) ---
@@ -380,10 +380,11 @@ class ControlWindow(QMainWindow):
         playlist_layout = QVBoxLayout(playlist_group)
         
         self.list_widget = QListWidget()
+        self.list_widget.setMinimumWidth(300)  # <--- FIX 1: Prevents playlist from collapsing
         self.list_widget.setSelectionMode(QListWidget.SelectionMode.ExtendedSelection)
         playlist_layout.addWidget(self.list_widget)
 
-        # Top Button Row (+ Add, Remove)
+        # Row 1: Add / Remove
         row1_layout = QHBoxLayout()
         self.btn_add = QPushButton("+ Add Files")
         self.btn_remove = QPushButton("Remove Selected")
@@ -391,7 +392,7 @@ class ControlWindow(QMainWindow):
         row1_layout.addWidget(self.btn_add)
         row1_layout.addWidget(self.btn_remove)
 
-        # Bottom Button Row (Save, Load, Clear)
+        # Row 2: Save / Load / Clear
         row2_layout = QHBoxLayout()
         self.btn_save = QPushButton("Save List")
         self.btn_save.clicked.connect(self.save_playlist)
@@ -409,6 +410,11 @@ class ControlWindow(QMainWindow):
 
         playlist_layout.addLayout(row1_layout)
         playlist_layout.addLayout(row2_layout)
+        
+        grid.addWidget(playlist_group, 0, 1, 2, 1) 
+        grid.setColumnStretch(0, 1) 
+        grid.setColumnStretch(1, 1) 
+        grid.setColumnMinimumWidth(1, 320)  # <--- FIX 2: Guarantees column width
 
         # --- CONNECTIONS ---
         self.device_combo.currentIndexChanged.connect(self.change_audio_device)
