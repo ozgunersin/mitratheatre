@@ -3,9 +3,9 @@ import os
 import platform
 import subprocess
 from PySide6.QtWidgets import (QApplication, QMainWindow, QWidget, QVBoxLayout,
-                               QPushButton, QFileDialog, QListWidget, QHBoxLayout,
-                               QLabel, QComboBox, QGroupBox, QGridLayout, QSlider,
-                               QMessageBox, QDialog, QTextEdit)
+                               QPushButton, QFileDialog, QListWidget, QListWidgetItem,
+                               QHBoxLayout, QLabel, QComboBox, QGroupBox, QGridLayout,
+                               QSlider, QMessageBox, QDialog, QTextEdit)
 from PySide6.QtMultimedia import QMediaPlayer, QAudioOutput, QMediaDevices, QVideoFrame
 from PySide6.QtMultimediaWidgets import QVideoWidget
 from PySide6.QtCore import QUrl, Qt, QTimer
