@@ -3,7 +3,7 @@ END-USER LICENSE AGREEMENT & OPEN SOURCE NOTICE (ENGLISH)
 ================================================================================
 
 Software: Mitra Theatre
-Version: 1.2
+Version: 1.3.1
 Author / Copyright (c) 2026 Özgün Ersin. All Rights Reserved.
 
 1. FREE AND OPEN SOURCE NATURE & ATTRIBUTION
