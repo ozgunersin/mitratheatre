@@ -518,12 +518,12 @@ class ControlWindow(QMainWindow):
         dialog_layout.addLayout(header_layout)
 
         details_label = QLabel(
-            "<p><b>Version:</b> 1.3</p>"
+            "<p><b>Version:</b> 1.3.1</p>"
             "<p>&copy; 2026 Özgün Ersin. All Rights Reserved.</p>"
             "<p>A professional dual-deck media controller designed for seamless presentations and live events. Proudly FOSS.</p>"
             "<h3>Changelog</h3>"
             "<ul style='margin-top: 0px; margin-bottom: 10px;'>"
-            "<li><b>v1.3:</b> Added Auto Play queue & Replay toggle buttons (soft-green active indicators), Master Playlist 'Clear List' button with confirmation dialog, enlarged monochrome replay symbol.</li>"
+            "<li><b>v1.3.1:</b> Added playlist Save/Load (.m3u/.txt) functionality, multi-item selection removal, and color-coded playlist items (Green for Video, Gray for Audio).</li>"
             "</ul>"
             f'<p>If you find Mitra Theatre useful, consider <a href="{DONATION_URL}">supporting its development</a>.</p>'
         )
