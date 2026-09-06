@@ -8,7 +8,7 @@ from PySide6.QtWidgets import (QApplication, QMainWindow, QWidget, QVBoxLayout,
                                QMessageBox, QDialog, QTextEdit)
 from PySide6.QtMultimedia import QMediaPlayer, QAudioOutput, QMediaDevices, QVideoFrame
 from PySide6.QtMultimediaWidgets import QVideoWidget
-from PySide6.QtCore import QUrl, Qt
+from PySide6.QtCore import QUrl, Qt, Qtimes
 from PySide6.QtGui import QPixmap, QIcon, QDesktopServices
 
 # --- RESOURCE PATH HELPER (FOR PYINSTALLER ICON & DATA BUNDLING) ---
@@ -452,8 +452,6 @@ class ControlWindow(QMainWindow):
             self.lbl_preview.clear() 
             self.btn_playpause_a.setText("▶ Play")
 
-    from PySide6.QtCore import QTimer  # Ensure QTimer is imported at top or used here
-
     def check_video_status(self, status):
         if status == QMediaPlayer.MediaStatus.EndOfMedia:
             self.display_window.video_widget.hide()
@@ -599,15 +597,14 @@ class ControlWindow(QMainWindow):
                 item.setForeground(QColor("#4CAF50"))  # Green for Video
                 
             self.list_widget.addItem(item)
-     def save_playlist(self):
-       if not self.playlist:
-            return
-        file_path, _ = QFileDialog.getSaveFileName(self, "Save Playlist", "", "Playlist Files (*.m3u *.txt)")
-        if file_path:
-            with open(file_path, "w", encoding="utf-8") as f:
-                for item_path in self.playlist:
-                    f.write(item_path + "\n")
-
+    def save_playlist(self):
+         if not self.playlist:
+             return
+         file_path, _ = QFileDialog.getSaveFileName(self, "Save Playlist", "", "Playlist Files (*.m3u *.txt)")
+         if file_path:
+             with open(file_path, "w", encoding="utf-8") as f:
+                 for item_path in self.playlist:
+                     f.write(item_path + "\n")
     def load_playlist_file(self):
         file_path, _ = QFileDialog.getOpenFileName(self, "Load Playlist", "", "Playlist Files (*.m3u *.txt)")
         if file_path:
@@ -773,7 +770,6 @@ class ControlWindow(QMainWindow):
 
         event.accept()
 
-from PySide6.QtCore import QTimer
 
 def main():
     # --- THE LINUX WAYLAND FIX ---
