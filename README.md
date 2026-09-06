@@ -14,7 +14,7 @@ Mitra Theatre is a lightweight, cross-platform media playback tool built with Py
 * **Smart Playlist Management:** Add all your media to a single master playlist. Double-clicking a video file automatically routes it to Deck A, while audio-only files (MP3, WAV, etc.) intelligently route to Deck B.
 * **Live Output Blanking (LIVE/BLACK):** Instantly cut the projector feed to black with a single toggle switch, allowing you to queue up and preview the next video privately before pushing it live to the audience.
 * **Auto-Screen Routing:** The application automatically detects multiple monitors. The control deck opens on your primary screen, while the projector output window automatically maximizes in fullscreen on your secondary display.
-* **Cross-Platform:** Native builds available for Windows, macOS, and Linux.
+* **Cross-Platform:** Native builds available for Windows, and Linux.
 
 ---
 
@@ -24,7 +24,6 @@ You do not need to install Python to run Mitra Theatre. Pre-compiled, ready-to-u
 
 Go to the [Releases](../../releases/latest) page to download the latest version (v1.2):
 * **Windows:** Download the `.exe` installer.
-* **macOS:** Download the `.dmg` file.
 * **Linux:** Download the `.AppImage` (or `.deb` / Flatpak if available).
 
 ---
