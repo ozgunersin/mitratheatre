@@ -33,29 +33,6 @@ jobs:
           # Upload only the compiled installer from Inno Setup's output folder
           path: installer_output/*.exe
 
-  build-macos:
-    runs-on: macos-latest
-    steps:
-      - uses: actions/checkout@v5
-      - name: Set up Python
-        uses: actions/setup-python@v6
-        with:
-          python-version: '3.10'
-      - name: Install dependencies
-        run: pip install -r requirements.txt
-      - name: Fix Line Endings (Just in case!)
-        run: sed -i '' 's/\r$//' create_dmg.sh
-      - name: Build macOS App & DMG
-        run: |
-          pyinstaller mitra_theatre_macos.spec
-          chmod +x create_dmg.sh
-          ./create_dmg.sh
-      - name: Upload macOS Artifact
-        uses: actions/upload-artifact@v5
-        with:
-          name: MitraTheatre-macOS
-          path: "*.dmg"
-
   build-linux:
     runs-on: ubuntu-latest
     steps:
@@ -108,7 +85,7 @@ jobs:
           path: "Mitra_Theatre-x86_64.AppImage"
           
   create-release:
-    needs: [build-windows, build-macos, build-linux] 
+    needs: [build-windows, build-linux] 
     runs-on: ubuntu-latest
     steps:
       - name: Download all artifacts
@@ -121,7 +98,6 @@ jobs:
           name: "Mitra Theatre v1.2 Build ${{ github.run_number }}"
           files: |
             MitraTheatre-Windows/**/*.exe
-            MitraTheatre-macOS/*.dmg
             MitraTheatre-Linux/*.AppImage
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
