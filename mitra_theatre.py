@@ -104,9 +104,9 @@ QPushButton#smallToggleBtn {
     font-size: 13px;
     font-weight: bold;
 }
-QPushButton#smallToggleBtn:hover { 
-    background-color: #3F3F46; 
-    color: #FFFFFF; 
+QPushButton#smallToggleBtn:hover {
+    background-color: #3F3F46;
+    color: #FFFFFF;
 }
 QPushButton#smallToggleBtn:checked {
     background-color: #2E7D32;
@@ -120,12 +120,12 @@ class EulaDialog(QDialog):
         super().__init__(parent)
         self.setWindowTitle("End-User License Agreement (EULA)")
         self.resize(700, 500)
-        
+
         layout = QVBoxLayout(self)
-        
+
         self.text_edit = QTextEdit(self)
         self.text_edit.setReadOnly(True)
-        
+
         eula_path = resource_path("EULA.txt")
         try:
             with open(eula_path, "r", encoding="utf-8") as file:
@@ -135,9 +135,9 @@ class EulaDialog(QDialog):
                 f"Error: EULA.txt could not be loaded.\nDetails: {str(e)}\n\n"
                 "Software provided as-is. Governed by the laws of Türkiye, jurisdiction in Antalya."
             )
-            
+
         layout.addWidget(self.text_edit)
-        
+
         self.close_btn = QPushButton("Close", self)
         self.close_btn.clicked.connect(self.accept)
         layout.addWidget(self.close_btn)
@@ -147,12 +147,12 @@ class ReadmeDialog(QDialog):
         super().__init__(parent)
         self.setWindowTitle("Mitra Theatre - Readme")
         self.resize(700, 500)
-        
+
         layout = QVBoxLayout(self)
-        
+
         self.text_edit = QTextEdit(self)
         self.text_edit.setReadOnly(True)
-        
+
         readme_path = resource_path("README.md")
         try:
             with open(readme_path, "r", encoding="utf-8") as file:
@@ -161,9 +161,9 @@ class ReadmeDialog(QDialog):
             self.text_edit.setText(
                 f"Error: README.md could not be loaded.\nDetails: {str(e)}"
             )
-            
+
         layout.addWidget(self.text_edit)
-        
+
         self.close_btn = QPushButton("Close", self)
         self.close_btn.clicked.connect(self.accept)
         layout.addWidget(self.close_btn)
@@ -205,14 +205,14 @@ class ControlWindow(QMainWindow):
         self.video_player = QMediaPlayer()
         self.video_audio_output = QAudioOutput()
         self.video_player.setAudioOutput(self.video_audio_output)
-        
+
         self.video_player.setVideoOutput(self.display_window.video_widget)
         self.display_window.video_widget.videoSink().videoFrameChanged.connect(self.process_video_frame)
 
         self.audio_player = QMediaPlayer()
         self.audio_only_output = QAudioOutput()
         self.audio_player.setAudioOutput(self.audio_only_output)
-        
+
         self.video_audio_output.setVolume(0.5)
         self.audio_only_output.setVolume(0.5)
 
@@ -223,7 +223,7 @@ class ControlWindow(QMainWindow):
         central_widget = QWidget()
         self.setCentralWidget(central_widget)
         main_layout = QVBoxLayout(central_widget)
-        
+
         # Top Header: Device Selector & App Info
         device_layout = QHBoxLayout()
         device_layout.addWidget(QLabel("Master Output Device:"))
@@ -231,8 +231,8 @@ class ControlWindow(QMainWindow):
         for device in self.available_audio_devices:
             self.device_combo.addItem(device.description())
         device_layout.addWidget(self.device_combo)
-        
-        device_layout.addStretch() 
+
+        device_layout.addStretch()
 
         self.btn_info = QPushButton("Info")
         self.btn_info.setObjectName("infoBtn")
@@ -243,7 +243,7 @@ class ControlWindow(QMainWindow):
         self.btn_donate.setObjectName("donateBtn")
         self.btn_donate.clicked.connect(self.open_donation_page)
         device_layout.addWidget(self.btn_donate)
-        
+
         main_layout.addLayout(device_layout)
 
         # Middle Grid Layout
@@ -253,7 +253,7 @@ class ControlWindow(QMainWindow):
         # --- DECK A (VIDEO) ---
         deck_a_group = QGroupBox("Deck A: Visuals & Video")
         deck_a_layout = QHBoxLayout(deck_a_group)
-        
+
         deck_a_controls_layout = QVBoxLayout()
         self.lbl_deck_a_status = QLabel("Currently Loaded: None")
         self.lbl_deck_a_status.setStyleSheet("color: #4CAF50; font-weight: bold;")
@@ -263,7 +263,7 @@ class ControlWindow(QMainWindow):
         preview_controls_layout = QHBoxLayout()
         self.lbl_preview = QLabel()
         self.lbl_preview.setObjectName("previewLabel")
-        self.lbl_preview.setFixedSize(320, 180) 
+        self.lbl_preview.setFixedSize(320, 180)
         self.lbl_preview.setAlignment(Qt.AlignmentFlag.AlignCenter)
         preview_controls_layout.addWidget(self.lbl_preview)
 
@@ -307,7 +307,7 @@ class ControlWindow(QMainWindow):
         self.btn_load_a.setObjectName("loadBtn")
         self.btn_playpause_a = QPushButton("▶ Play")
         self.btn_stop_a = QPushButton("■ Stop")
-        
+
         # Blank Screen toggle placed directly in Deck A control bar
         self.btn_blank = QPushButton("LIVE")
         self.btn_blank.setObjectName("blankBtn")
@@ -319,7 +319,7 @@ class ControlWindow(QMainWindow):
         btn_layout_a.addWidget(self.btn_stop_a)
         btn_layout_a.addWidget(self.btn_blank)
         deck_a_controls_layout.addLayout(btn_layout_a)
-        
+
         deck_a_layout.addLayout(deck_a_controls_layout)
 
         vol_a_layout = QVBoxLayout()
@@ -336,7 +336,7 @@ class ControlWindow(QMainWindow):
         deck_b_group = QGroupBox("Deck B: Background Music")
         deck_b_layout = QHBoxLayout(deck_b_group)
         deck_b_layout.setContentsMargins(10, 5, 10, 5)
-        
+
         deck_b_controls_layout = QVBoxLayout()
         self.lbl_deck_b_status = QLabel("Currently Loaded: None")
         self.lbl_deck_b_status.setStyleSheet("color: #FF9800; font-weight: bold;")
@@ -354,14 +354,13 @@ class ControlWindow(QMainWindow):
         btn_layout_b = QHBoxLayout()
         self.btn_load_b = QPushButton("Load")
         self.btn_load_b.setObjectName("loadBtn")
-        self.btn_playpause_b.setText("▶ Play") if hasattr(self, 'btn_playpause_b') else None
         self.btn_playpause_b = QPushButton("▶ Play")
         self.btn_stop_b = QPushButton("■ Stop")
         btn_layout_b.addWidget(self.btn_load_b)
         btn_layout_b.addWidget(self.btn_playpause_b)
         btn_layout_b.addWidget(self.btn_stop_b)
         deck_b_controls_layout.addLayout(btn_layout_b)
-        
+
         deck_b_layout.addLayout(deck_b_controls_layout)
 
         vol_b_layout = QVBoxLayout()
@@ -378,9 +377,9 @@ class ControlWindow(QMainWindow):
         # --- MASTER PLAYLIST ---
         playlist_group = QGroupBox("Master Playlist")
         playlist_layout = QVBoxLayout(playlist_group)
-        
+
         self.list_widget = QListWidget()
-        self.list_widget.setMinimumWidth(300)  # <--- FIX 1: Prevents playlist from collapsing
+        self.list_widget.setMinimumWidth(300)  # Prevents playlist from collapsing
         self.list_widget.setSelectionMode(QListWidget.SelectionMode.ExtendedSelection)
         playlist_layout.addWidget(self.list_widget)
 
@@ -396,7 +395,7 @@ class ControlWindow(QMainWindow):
         row2_layout = QHBoxLayout()
         self.btn_save = QPushButton("Save List")
         self.btn_save.clicked.connect(self.save_playlist)
-        
+
         self.btn_load_list = QPushButton("Load List")
         self.btn_load_list.clicked.connect(self.load_playlist_file)
 
@@ -410,19 +409,18 @@ class ControlWindow(QMainWindow):
 
         playlist_layout.addLayout(row1_layout)
         playlist_layout.addLayout(row2_layout)
-        
-        grid.addWidget(playlist_group, 0, 1, 2, 1) 
-        grid.setColumnStretch(0, 1) 
-        grid.setColumnStretch(1, 1) 
-        grid.setColumnMinimumWidth(1, 320)  # <--- FIX 2: Guarantees column width
+
+        grid.addWidget(playlist_group, 0, 1, 2, 1)
+        grid.setColumnStretch(0, 1)
+        grid.setColumnStretch(1, 1)
+        grid.setColumnMinimumWidth(1, 320)  # Guarantees column width
 
         # --- CONNECTIONS ---
         self.device_combo.currentIndexChanged.connect(self.change_audio_device)
-        self.btn_add.clicked.connect(self.add_media)
-        
+        self.btn_add.clicked.connect(lambda: self.add_media())
+
         self.list_widget.itemDoubleClicked.connect(self.handle_playlist_doubleclick)
-        self.list_widget.setSelectionMode(QListWidget.SelectionMode.ExtendedSelection)
-        
+
         self.btn_load_a.clicked.connect(self.load_deck_a)
         self.btn_playpause_a.clicked.connect(self.toggle_play_a)
         self.btn_stop_a.clicked.connect(self.stop_a)
@@ -447,15 +445,15 @@ class ControlWindow(QMainWindow):
 
     def load_deck_a(self, index_override=None):
         selected = index_override if index_override is not None else self.list_widget.currentRow()
-        if selected >= 0 and selected < len(self.playlist):
+        if 0 <= selected < len(self.playlist):
             self.current_deck_a_index = selected
             self.list_widget.setCurrentRow(selected)
             file_path = self.playlist[selected]
             self.video_player.setSource(QUrl.fromLocalFile(file_path))
             self.lbl_deck_a_status.setText(f"Loaded: {os.path.basename(file_path)}")
-            self.video_player.stop() 
+            self.video_player.stop()
             self.display_window.video_widget.hide()
-            self.lbl_preview.clear() 
+            self.lbl_preview.clear()
             self.btn_playpause_a.setText("▶ Play")
 
     def check_video_status(self, status):
@@ -524,6 +522,9 @@ class ControlWindow(QMainWindow):
             "<h3>Changelog</h3>"
             "<ul style='margin-top: 0px; margin-bottom: 10px;'>"
             "<li><b>v1.3.1:</b> Added playlist Save/Load (.m3u/.txt) functionality, multi-item selection removal, and color-coded playlist items (Green for Video, Gray for Audio).</li>"
+            "<li><b>v1.3:</b> Added Auto Play queue & Replay toggle buttons (soft-green active indicators), Master Playlist 'Clear List' button with confirmation dialog, enlarged monochrome replay symbol.</li>"
+            "<li><b>v1.2:</b> Smart double-click loading (Video -> Deck A, Audio -> Deck B), enhanced LIVE/BLACK screen toggle, Changelog added.</li>"
+            "<li><b>v1.1:</b> Output Blanking switch added, EULA file integration, UI refinements.</li>"
             "</ul>"
             f'<p>If you find Mitra Theatre useful, consider <a href="{DONATION_URL}">supporting its development</a>.</p>'
         )
@@ -545,7 +546,7 @@ class ControlWindow(QMainWindow):
 
         github_repo_url = "https://github.com/ozgunersin/mitratheatre"
         btn_github = QPushButton(" Github Repo")
-        
+
         svg_bytes = (
             b"<svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='white'>"
             b"<path d='M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 "
@@ -595,54 +596,61 @@ class ControlWindow(QMainWindow):
         for f in files:
             self.playlist.append(f)
             item = QListWidgetItem(os.path.basename(f))
-            
+
             ext = os.path.splitext(f)[1].lower()
             if ext in ['.mp3', '.wav', '.flac', '.aac', '.ogg', '.m4a']:
                 item.setForeground(QColor("#888888"))  # Gray for Audio
             else:
                 item.setForeground(QColor("#4CAF50"))  # Green for Video
-                
+
             self.list_widget.addItem(item)
+
     def save_playlist(self):
-         if not self.playlist:
-             return
-         file_path, _ = QFileDialog.getSaveFileName(self, "Save Playlist", "", "Playlist Files (*.m3u *.txt)")
-         if file_path:
-             with open(file_path, "w", encoding="utf-8") as f:
-                 for item_path in self.playlist:
-                     f.write(item_path + "\n")
+        if not self.playlist:
+            return
+        file_path, _ = QFileDialog.getSaveFileName(self, "Save Playlist", "", "Playlist Files (*.m3u *.txt)")
+        if file_path:
+            with open(file_path, "w", encoding="utf-8") as f:
+                for item_path in self.playlist:
+                    f.write(item_path + "\n")
+
     def load_playlist_file(self):
         file_path, _ = QFileDialog.getOpenFileName(self, "Load Playlist", "", "Playlist Files (*.m3u *.txt)")
         if file_path:
-            self.clear_playlist()
+            self.clear_playlist(confirm=False)
             loaded_files = []
-            with open(file_path, "r", encoding="utf-8") as f:
-                for line in f:
-                    path = line.strip()
-                    if path and os.path.exists(path):
-                        loaded_files.append(path)
+            try:
+                with open(file_path, "r", encoding="utf-8-sig") as f:
+                    for line in f:
+                        path = line.strip()
+                        if path and os.path.exists(path):
+                            loaded_files.append(path)
+            except Exception as e:
+                print(f"Error loading playlist: {e}")
+
             if loaded_files:
                 self.add_media(files=loaded_files)
-    def clear_playlist(self):
-        if not self.playlist:
-            return
 
-        reply = QMessageBox.question(
-            self,
-            "Clear Master Playlist",
-            "Are you sure you want to remove all files from the playlist?",
-            QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No,
-            QMessageBox.StandardButton.No
-        )
+    def clear_playlist(self, confirm=True):
+        if confirm and self.playlist:
+            reply = QMessageBox.question(
+                self,
+                "Clear Master Playlist",
+                "Are you sure you want to remove all files from the playlist?",
+                QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No,
+                QMessageBox.StandardButton.No
+            )
+            if reply != QMessageBox.StandardButton.Yes:
+                return
 
-        if reply == QMessageBox.StandardButton.Yes:
-            self.stop_a()
-            self.stop_b()
-            self.playlist.clear()
-            self.list_widget.clear()
-            self.current_deck_a_index = -1
-            self.lbl_deck_a_status.setText("Currently Loaded: None")
-            self.lbl_deck_b_status.setText("Currently Loaded: None")
+        self.stop_a()
+        self.stop_b()
+        self.playlist.clear()
+        self.list_widget.clear()
+        self.current_deck_a_index = -1
+        self.lbl_deck_a_status.setText("Currently Loaded: None")
+        self.lbl_deck_b_status.setText("Currently Loaded: None")
+
     def remove_selected_items(self):
         selected_items = self.list_widget.selectedItems()
         if not selected_items:
@@ -654,11 +662,12 @@ class ControlWindow(QMainWindow):
             self.list_widget.takeItem(row)
             if 0 <= row < len(self.playlist):
                 self.playlist.pop(row)
-                
+
         self.current_deck_a_index = -1
+
     def handle_playlist_doubleclick(self, item):
         selected = self.list_widget.currentRow()
-        if selected >= 0:
+        if 0 <= selected < len(self.playlist):
             file_path = self.playlist[selected]
             ext = os.path.splitext(file_path)[1].lower()
             if ext in ['.mp3', '.wav', '.flac', '.aac', '.ogg', '.m4a']:
@@ -713,15 +722,15 @@ class ControlWindow(QMainWindow):
             image = frame.toImage()
             if not image.isNull():
                 pixmap = QPixmap.fromImage(image)
-                scaled_pixmap = pixmap.scaled(self.lbl_preview.size(), 
-                                              Qt.AspectRatioMode.KeepAspectRatio, 
+                scaled_pixmap = pixmap.scaled(self.lbl_preview.size(),
+                                              Qt.AspectRatioMode.KeepAspectRatio,
                                               Qt.TransformationMode.SmoothTransformation)
                 self.lbl_preview.setPixmap(scaled_pixmap)
 
     # --- DECK B LOGIC ---
     def load_deck_b(self):
         selected = self.list_widget.currentRow()
-        if selected >= 0:
+        if 0 <= selected < len(self.playlist):
             file_path = self.playlist[selected]
             self.audio_player.setSource(QUrl.fromLocalFile(file_path))
             self.lbl_deck_b_status.setText(f"Loaded: {os.path.basename(file_path)}")
