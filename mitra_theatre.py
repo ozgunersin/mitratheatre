@@ -8,7 +8,7 @@ from PySide6.QtWidgets import (QApplication, QMainWindow, QWidget, QVBoxLayout,
                                QMessageBox, QDialog, QTextEdit)
 from PySide6.QtMultimedia import QMediaPlayer, QAudioOutput, QMediaDevices, QVideoFrame
 from PySide6.QtMultimediaWidgets import QVideoWidget
-from PySide6.QtCore import QUrl, Qt, Qtimes
+from PySide6.QtCore import QUrl, Qt, Qtimer
 from PySide6.QtGui import QPixmap, QIcon, QDesktopServices, QColor
 
 # --- RESOURCE PATH HELPER (FOR PYINSTALLER ICON & DATA BUNDLING) ---
