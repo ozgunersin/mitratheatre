@@ -354,6 +354,7 @@ class ControlWindow(QMainWindow):
         btn_layout_b = QHBoxLayout()
         self.btn_load_b = QPushButton("Load")
         self.btn_load_b.setObjectName("loadBtn")
+        self.btn_playpause_b.setText("▶ Play") if hasattr(self, 'btn_playpause_b') else None
         self.btn_playpause_b = QPushButton("▶ Play")
         self.btn_stop_b = QPushButton("■ Stop")
         btn_layout_b.addWidget(self.btn_load_b)
@@ -665,6 +666,22 @@ class ControlWindow(QMainWindow):
 
         self.current_deck_a_index = -1
 
+        reply = QMessageBox.question(
+            self,
+            "Clear Master Playlist",
+            "Are you sure you want to remove all files from the playlist?",
+            QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No,
+            QMessageBox.StandardButton.No
+        )
+
+        if reply == QMessageBox.StandardButton.Yes:
+            self.stop_a()
+            self.stop_b()
+            self.playlist.clear()
+            self.list_widget.clear()
+            self.current_deck_a_index = -1
+            self.lbl_deck_a_status.setText("Currently Loaded: None")
+            self.lbl_deck_b_status.setText("Currently Loaded: None")
     def handle_playlist_doubleclick(self, item):
         selected = self.list_widget.currentRow()
         if 0 <= selected < len(self.playlist):
