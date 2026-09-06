@@ -378,25 +378,37 @@ class ControlWindow(QMainWindow):
         # --- MASTER PLAYLIST ---
         playlist_group = QGroupBox("Master Playlist")
         playlist_layout = QVBoxLayout(playlist_group)
+        
         self.list_widget = QListWidget()
+        self.list_widget.setSelectionMode(QListWidget.SelectionMode.ExtendedSelection)
         playlist_layout.addWidget(self.list_widget)
-        
-        # Action Buttons Row (Add & Clear List)
-        playlist_btn_layout = QHBoxLayout()
-        
+
+        # Top Button Row (+ Add, Remove)
+        row1_layout = QHBoxLayout()
         self.btn_add = QPushButton("+ Add Files")
-        self.btn_clear = QPushButton("Clear List")
+        self.btn_remove = QPushButton("Remove Selected")
+        self.btn_remove.clicked.connect(self.remove_selected_items)
+        row1_layout.addWidget(self.btn_add)
+        row1_layout.addWidget(self.btn_remove)
+
+        # Bottom Button Row (Save, Load, Clear)
+        row2_layout = QHBoxLayout()
+        self.btn_save = QPushButton("Save List")
+        self.btn_save.clicked.connect(self.save_playlist)
+        
+        self.btn_load_list = QPushButton("Load List")
+        self.btn_load_list.clicked.connect(self.load_playlist_file)
+
+        self.btn_clear = QPushButton("Clear")
         self.btn_clear.setStyleSheet("background-color: #C62828; border: none;")
         self.btn_clear.clicked.connect(self.clear_playlist)
-        
-        playlist_btn_layout.addWidget(self.btn_add)
-        playlist_btn_layout.addWidget(self.btn_clear)
-        
-        playlist_layout.addLayout(playlist_btn_layout)
-        
-        grid.addWidget(playlist_group, 0, 1, 2, 1) 
-        grid.setColumnStretch(0, 1) 
-        grid.setColumnStretch(1, 1)
+
+        row2_layout.addWidget(self.btn_save)
+        row2_layout.addWidget(self.btn_load_list)
+        row2_layout.addWidget(self.btn_clear)
+
+        playlist_layout.addLayout(row1_layout)
+        playlist_layout.addLayout(row2_layout)
 
         # --- CONNECTIONS ---
         self.device_combo.currentIndexChanged.connect(self.change_audio_device)
@@ -597,6 +609,20 @@ class ControlWindow(QMainWindow):
             self.current_deck_a_index = -1
             self.lbl_deck_a_status.setText("Currently Loaded: None")
             self.lbl_deck_b_status.setText("Currently Loaded: None")
+
+    def remove_selected_items(self):
+        selected_items = self.list_widget.selectedItems()
+        if not selected_items:
+            return
+
+        # Delete items in reverse order to preserve index alignment
+        for item in reversed(sorted(selected_items, key=lambda x: self.list_widget.row(x))):
+            row = self.list_widget.row(item)
+            self.list_widget.takeItem(row)
+            if 0 <= row < len(self.playlist):
+                self.playlist.pop(row)
+                
+        self.current_deck_a_index = -1
     def handle_playlist_doubleclick(self, item):
         selected = self.list_widget.currentRow()
         if selected >= 0:
@@ -606,7 +632,27 @@ class ControlWindow(QMainWindow):
                 self.load_deck_b()
             else:
                 self.load_deck_a()
+    def save_playlist(self):
+        if not self.playlist:
+            return
+        file_path, _ = QFileDialog.getSaveFileName(self, "Save Playlist", "", "Playlist Files (*.m3u *.txt)")
+        if file_path:
+            with open(file_path, "w", encoding="utf-8") as f:
+                for item_path in self.playlist:
+                    f.write(item_path + "\n")
 
+    def load_playlist_file(self):
+        file_path, _ = QFileDialog.getOpenFileName(self, "Load Playlist", "", "Playlist Files (*.m3u *.txt)")
+        if file_path:
+            self.clear_playlist()
+            loaded_files = []
+            with open(file_path, "r", encoding="utf-8") as f:
+                for line in f:
+                    path = line.strip()
+                    if path and os.path.exists(path):
+                        loaded_files.append(path)
+            if loaded_files:
+                self.add_media(files=loaded_files)
     def format_time(self, ms):
         s = round(ms / 1000)
         m, s = divmod(s, 60)
